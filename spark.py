@@ -90,7 +90,7 @@ if __name__ == "__main__":
     out = (df_out
            .writeStream
            .format("kafka")
-           .queryName("projet-esme")
+           .queryName("velib-projet-final-data")
            .option("kafka.bootstrap.servers", "localhost:9092")
            .option("topic", "velib-projet-final-data")
            .outputMode("append")
@@ -103,11 +103,11 @@ if __name__ == "__main__":
 while not spark.streams.active:
     time.sleep(1)
 
-df_out.createOrReplaceTempView("projet-esme")
+df_out.createOrReplaceTempView("velib-projet-final-data")
 
 # Ajout de la vérification pour voir si le DataFrame est vide
 while spark.streams.active:
-    if spark.sql("SELECT COUNT(*) AS count FROM `projet-esme`").collect()[0]["count"] > 0:
+    if spark.sql("SELECT COUNT(*) AS count FROM `velib-projet-final-data`").collect()[0]["count"] > 0:
         print("Des données sont disponibles.")
     else:
         print("Aucune donnée disponible.")
